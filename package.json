@@ -4,10 +4,9 @@
   "description": "Настройка и создание сервера, работа с базами данных ",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint",
-    "start": "npm run start",
-    "dev": "npm run dev"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
