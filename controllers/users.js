@@ -75,7 +75,7 @@ module.exports.updateAvatar = (req, res) => {
     .catch((err) => {
       if (err.message === 'NotValidId') {
         res.status(404).send({ message: 'Пользователь с указанным _id не найден.' });
-      } if (err.name === 'ValidationError') {
+      } else if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
       } else {
         res.status(500).send({ message: 'Что-то пошло не так.' });
