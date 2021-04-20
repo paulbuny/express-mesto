@@ -2,11 +2,11 @@ const express = require("express");
 const routes = express.Router();
 
 const {
-    getUsers,
-    getUserById,
-    createUser,
-    updateProfile,
-    updateAvatar
+  getUsers,
+  getUserById,
+  createUser,
+  updateProfile,
+  updateAvatar,
 } = require("../controllers/users");
 
 routes.get("/users", getUsers);

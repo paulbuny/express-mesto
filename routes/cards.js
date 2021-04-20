@@ -2,11 +2,11 @@ const express = require('express');
 const routes = express.Router();
 
 const {
-    getCards,
-    createCard,
-    deleteCard,
-    putLike,
-    removeLike
+  getCards,
+  createCard,
+  deleteCard,
+  putLike,
+  removeLike,
 } = require("../controllers/cards");
 
 routes.get("/cards", getCards);
