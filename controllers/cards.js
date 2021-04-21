@@ -30,6 +30,8 @@ module.exports.deleteCard = (req, res) => {
     .catch((err) => {
       if (err.message === 'NotValidId') {
         res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({ message: 'id карточки не валиден' });
       } else {
         res.status(500).send({ message: 'Что-то пошло не так.' });
       }
@@ -43,10 +45,13 @@ module.exports.putLike = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .orFail(new Error('NotValidId'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Переданы некорректные данные для постановки лайка.' });
+      if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Переданы некорректные данные для снятия лайка.' });
       } else {
         res.status(500).send({ message: 'Что-то пошло не так.' });
       }
@@ -60,9 +65,12 @@ module.exports.removeLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .orFail(new Error('NotValidId'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      } else if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные для снятия лайка.' });
       } else {
         res.status(500).send({ message: 'Что-то пошло не так.' });
