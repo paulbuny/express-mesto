@@ -10,10 +10,15 @@ const {
   removeLike,
 } = require('../controllers/cards');
 
+const {
+  paramsIdValidation,
+  cardDataValidation,
+} = require('../middlewares/requestValidation');
+
 routes.get('/cards', getCards);
-routes.post('/cards', createCard);
-routes.delete('/cards/:id', deleteCard);
-routes.put('/cards/:id/likes', putLike);
-routes.delete('/cards/:id/likes', removeLike);
+routes.post('/cards', cardDataValidation, createCard);
+routes.delete('/cards/:id', paramsIdValidation, deleteCard);
+routes.put('/cards/:id/likes', paramsIdValidation, putLike);
+routes.delete('/cards/:id/likes', paramsIdValidation, removeLike);
 
 module.exports = routes;
