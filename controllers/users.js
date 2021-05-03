@@ -85,8 +85,8 @@ module.exports.updateProfile = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new ValidationErr('Переданы некорректные данные при обновлении профиля');
       }
-      next(err);
-    });
+    })
+    .catch(next);
 };
 
 // Обновить аватар пользователя
@@ -103,10 +103,10 @@ module.exports.updateAvatar = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationErr('Переданы некорректные данные при обновлении аватара.');
+        throw new NotFoundErr('Переданы некорректные данные при обновлении аватара.');
       }
-      next(err);
-    });
+    })
+    .catch(next);
 };
 
 // Авторизация по логину и паролю
