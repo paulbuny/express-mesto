@@ -103,7 +103,7 @@ module.exports.updateAvatar = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new NotFoundErr('Переданы некорректные данные при обновлении аватара.');
+        throw new ValidationErr('Переданы некорректные данные при обновлении аватара.');
       }
     })
     .catch(next);
