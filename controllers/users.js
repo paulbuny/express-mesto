@@ -1,3 +1,4 @@
+const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -5,8 +6,6 @@ const User = require('../models/user');
 const ValidationErr = require('../errors/ValidationErr');
 const ConflictErr = require('../errors/ConflictErr');
 const NotFoundErr = require('../errors/NotFoundErr');
-
-const JWT_SECRET = '18c9ba303455bfb26cc99c2d1df102977095f92da872a2240cf10bf22723d15a';
 
 // Получить всех пользователей
 module.exports.getUsers = (req, res, next) => {
@@ -117,15 +116,10 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        JWT_SECRET,
+        NODE_ENV === 'production' ? JWT_SECRET : 'super-secret-key',
         { expiresIn: '7d' },
       );
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-        sameSite: true,
-      })
-        .end();
+      res.send({ token });
     })
     .catch(next);
 };

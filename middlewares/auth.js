@@ -1,21 +1,21 @@
 /* eslint-disable consistent-return */
+const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const AuthErr = require('../errors/AuthErr');
 
-const JWT_SECRET = '18c9ba303455bfb26cc99c2d1df102977095f92da872a2240cf10bf22723d15a';
-
 module.exports = (req, res, next) => {
-  const authorization = req.cookies.jwt;
+  const authorization = req.headers;
+  console.log(`###HEADERS ${req.headers}`);
 
-  if (!authorization) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     throw new AuthErr('Необходима авторизация');
   }
 
-  const token = authorization;
+  const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {
-    payload = jwt.verify(token, JWT_SECRET);
+    payload = jwt.verify(token, `${NODE_ENV === 'production' ? JWT_SECRET : 'super-secret-key'}`);
   } catch (err) {
     throw new AuthErr('Необходима авторизация');
   }
